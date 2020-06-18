@@ -1,4 +1,12 @@
-pub fn process_escapes(input: &str) -> Result<String, std::string::FromUtf8Error> {
+//! Library for parsing escape characters
+
+/// Escape [ASCII escapes](https://doc.rust-lang.org/reference/tokens.html#ascii-escapes) in `input`
+///
+/// Turns sequences that look like escape characters into actual escape characters, i.e. a
+/// backslash followed by an 'n' turns into a proper newline character.
+/// The only difference between ASCII escapes and Byte escapes is that the maximum value for a hex
+/// escape in `escape_ascii` is 0x7F.
+pub fn escape_ascii(input: &str) -> Result<String, std::string::FromUtf8Error> {
 
     if input.len() < 1 {
         return Ok(String::new());
@@ -12,6 +20,29 @@ pub fn process_escapes(input: &str) -> Result<String, std::string::FromUtf8Error
         }
     }
     String::from_utf8(v)
+}
+
+/// Escape [Byte escapes](https://doc.rust-lang.org/reference/tokens.html#byte-escapes) in `input`
+///
+/// Turns sequences that look like escape characters into actual escape characters, i.e. a
+/// backslash followed by an 'n' turns into a proper newline character.
+///
+/// The only difference between Byte escapes and ASCII escapes is that the maximum value for a hex
+/// escape in `escape_bytes` is 0xFF.
+pub fn escape_bytes(_input: &str) -> Result<String, std::string::FromUtf8Error> {
+    unimplemented!("`escape_bytes` is not yet implemented");
+}
+
+/// Escape [Unicode escapes](https://doc.rust-lang.org/reference/tokens.html#unicode-escapes) in
+/// `input`
+pub fn escape_unicode(_input: &str) -> Result<String, std::string::FromUtf8Error> {
+    unimplemented!("`escape_unicode` is not yet implemented");
+}
+
+/// Escape [Quote escapes](https://doc.rust-lang.org/reference/tokens.html#quote-escapes) in
+/// `input`
+pub fn escape_quotes(_input: &str) -> Result<String, std::string::FromUtf8Error> {
+    unimplemented!("`escape_quotes` is not yet implemented");
 }
 
 fn char_to_escape_sequence(chr: char) -> char {
@@ -42,7 +73,7 @@ mod tests {
         fn test_newline() {
             assert_eq!(
                 String::from("hello\nworld"),
-                process_escapes(r#"hello\nworld"#).unwrap()
+                escape_ascii(r#"hello\nworld"#).unwrap()
             );
         }
 
@@ -50,7 +81,7 @@ mod tests {
         fn test_carriage_return() {
             assert_eq!(
                 String::from("hello\rworld"),
-                process_escapes(r#"hello\rworld"#).unwrap()
+                escape_ascii(r#"hello\rworld"#).unwrap()
             );
         }
 
@@ -58,7 +89,7 @@ mod tests {
         fn test_tab() {
             assert_eq!(
                 String::from("hello\tworld"),
-                process_escapes(r#"hello\tworld"#).unwrap()
+                escape_ascii(r#"hello\tworld"#).unwrap()
             );
         }
 
@@ -66,7 +97,7 @@ mod tests {
         fn test_backslash() {
             assert_eq!(
                 String::from("hello\\world"),
-                process_escapes(r#"hello\\world"#).unwrap()
+                escape_ascii(r#"hello\\world"#).unwrap()
             );
         }
 
@@ -74,7 +105,7 @@ mod tests {
         fn test_null() {
             assert_eq!(
                 String::from("hello\0world"),
-                process_escapes(r#"hello\0world"#).unwrap()
+                escape_ascii(r#"hello\0world"#).unwrap()
             );
         }
     }
