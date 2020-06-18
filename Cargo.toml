@@ -1,0 +1,12 @@
+[package]
+name = "backslash"
+version = "0.1.0"
+authors = ["Ryan Geary <rtgnj42@gmail.com>"]
+edition = "2018"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/theryangeary/choose"
+readme = "readme.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
