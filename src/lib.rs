@@ -7,7 +7,6 @@
 /// The only difference between ASCII escapes and Byte escapes is that the maximum value for a hex
 /// escape in `escape_ascii` is 0x7F.
 pub fn escape_ascii(input: &str) -> Result<String, std::string::FromUtf8Error> {
-
     if input.len() < 1 {
         return Ok(String::new());
     }
@@ -58,7 +57,7 @@ fn char_to_escape_sequence(chr: char) -> char {
 
 fn is_escapable(chr: char) -> bool {
     match chr {
-        'n' | 't' | 'r' | '\\' | '0' => true,
+        'n' | 't' | 'r' | '\\' | '0' | 'x' => true,
         _ => false,
     }
 }
@@ -108,6 +107,14 @@ mod tests {
                 escape_ascii(r#"hello\0world"#).unwrap()
             );
         }
+
+        #[test]
+        fn test_ascii_byte() {
+            assert_eq!(
+                String::from("hello\x20world"),
+                escape_ascii(r#"hello\x20world"#).unwrap()
+            );
+        }
     }
 
     mod test_char_to_escape_sequence {
@@ -135,6 +142,11 @@ mod tests {
         #[test]
         fn test_escape_0() {
             assert_eq!('\0', char_to_escape_sequence('0'));
+        }
+
+        #[test]
+        fn test_esacpe_x() {
+            assert_eq!('\x7f', char_to_escape_sequence(0x7f as char));
         }
     }
 
@@ -165,6 +177,10 @@ mod tests {
         fn test_escape_0() {
             assert!(is_escapable('0'));
         }
+
+        #[test]
+        fn test_escape_x() {
+            assert!(is_escapable('x'));
+        }
     }
 }
-
