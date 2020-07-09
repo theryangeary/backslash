@@ -115,6 +115,69 @@ mod tests {
                 escape_ascii(r#"hello\x20world"#).unwrap()
             );
         }
+
+        #[test]
+        fn test_newline_bytes() {
+            assert_eq!(
+                String::from("hello\nworld"),
+                escape_bytes(r#"hello\nworld"#).unwrap()
+            );
+        }
+
+        #[test]
+        fn test_carriage_return_bytes() {
+            assert_eq!(
+                String::from("hello\rworld"),
+                escape_bytes(r#"hello\rworld"#).unwrap()
+            );
+        }
+
+        #[test]
+        fn test_tab_bytes() {
+            assert_eq!(
+                String::from("hello\tworld"),
+                escape_bytes(r#"hello\tworld"#).unwrap()
+            );
+        }
+
+        #[test]
+        fn test_backslash_bytes() {
+            assert_eq!(
+                String::from("hello\\world"),
+                escape_bytes(r#"hello\\world"#).unwrap()
+            );
+        }
+
+        #[test]
+        fn test_null_bytes() {
+            assert_eq!(
+                String::from("hello\0world"),
+                escape_bytes(r#"hello\0world"#).unwrap()
+            );
+        }
+        #[test]
+        fn test_non_ascii_byte() {
+            assert_eq!(
+                String::from("hello\x7fworld"),
+                escape_bytes(r#"hello\x7fworld"#).unwrap()
+            );
+        }
+
+        #[test]
+        fn test_unicode_u7fff() {
+            assert_eq!(
+                String::from("Hello\u{7fff}world"),
+                escape_unicode(r#"Hello\u{7fff}world"#).unwrap()
+            );
+        }
+
+        #[test]
+        fn test_unicode_crab_emoji() {
+            assert_eq!(
+                String::from("Hello🦀world"),
+                escape_unicode(r#"Hello\u{1f980}world"#).unwrap()
+            );
+        }
     }
 
     mod test_char_to_escape_sequence {
