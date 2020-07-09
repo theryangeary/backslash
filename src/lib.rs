@@ -28,8 +28,8 @@ pub fn escape_ascii(input: &str) -> Result<String, std::string::FromUtf8Error> {
 ///
 /// The only difference between Byte escapes and ASCII escapes is that the maximum value for a hex
 /// escape in `escape_bytes` is 0xFF.
-pub fn escape_bytes(_input: &str) -> Result<String, std::string::FromUtf8Error> {
-    unimplemented!("`escape_bytes` is not yet implemented");
+pub fn escape_bytes(input: &str) -> Result<String, std::string::FromUtf8Error> {
+    escape_ascii(input)
 }
 
 /// Escape [Unicode escapes](https://doc.rust-lang.org/reference/tokens.html#unicode-escapes) in
