@@ -62,6 +62,35 @@ fn is_simple_escape(chr: char) -> bool {
     }
 }
 
+fn is_complex_escape(chr: char) -> bool {
+    match chr {
+        'x' | 'u' => true,
+        _ => false,
+    }
+}
+
+fn ascii_to_hex(x: u8) -> u8 {
+    match x as char {
+        '0' => 0,
+        '1' => 1,
+        '2' => 2,
+        '3' => 3,
+        '4' => 4,
+        '5' => 5,
+        '6' => 6,
+        '7' => 7,
+        '8' => 8,
+        '9' => 9,
+        'a' | 'A' => 10,
+        'b' | 'B' => 11,
+        'c' | 'C' => 12,
+        'd' | 'D' => 13,
+        'e' | 'E' => 14,
+        'f' | 'F' => 15,
+        _ => panic!("expected hex value"),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
