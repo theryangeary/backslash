@@ -55,9 +55,9 @@ fn char_to_escape_sequence(chr: char) -> char {
     }
 }
 
-fn is_escapable(chr: char) -> bool {
+fn is_simple_escape(chr: char) -> bool {
     match chr {
-        'n' | 't' | 'r' | '\\' | '0' | 'x' => true,
+        'n' | 't' | 'r' | '\\' | '0' => true,
         _ => false,
     }
 }
@@ -213,37 +213,32 @@ mod tests {
         }
     }
 
-    mod is_escapable_tests {
+    mod is_simple_escape_tests {
         use super::*;
 
         #[test]
         fn test_escape_n() {
-            assert!(is_escapable('n'));
+            assert!(is_simple_escape('n'));
         }
 
         #[test]
         fn test_escape_t() {
-            assert!(is_escapable('t'));
+            assert!(is_simple_escape('t'));
         }
 
         #[test]
         fn test_escape_r() {
-            assert!(is_escapable('r'));
+            assert!(is_simple_escape('r'));
         }
 
         #[test]
         fn test_escape_backslash() {
-            assert!(is_escapable('\\'));
+            assert!(is_simple_escape('\\'));
         }
 
         #[test]
         fn test_escape_0() {
-            assert!(is_escapable('0'));
-        }
-
-        #[test]
-        fn test_escape_x() {
-            assert!(is_escapable('x'));
+            assert!(is_simple_escape('0'));
         }
     }
 }
