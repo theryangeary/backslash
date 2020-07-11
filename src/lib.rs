@@ -12,11 +12,23 @@ pub fn escape_ascii(input: &str) -> Result<String, std::string::FromUtf8Error> {
     }
 
     let mut v = Vec::from(input);
-    for i in 0..(v.len() - 1) {
-        if v[i] == '\\' as u8 && is_escapable(v[i + 1] as char) {
-            v.remove(i);
-            v[i] = char_to_escape_sequence(v[i] as char) as u8;
+    let mut i = 0;
+    while i < v.len() - 1 {
+        if v[i] == '\\' as u8 {
+            if is_simple_escape(v[i + 1] as char) {
+                v.remove(i);
+                v[i] = char_to_escape_sequence(v[i] as char) as u8;
+            } else if is_complex_escape(v[i + 1] as char) {
+                if v[i + 1] == 'x' as u8 {
+                    v.remove(i);
+                    v.remove(i);
+                    let sixteens = ascii_to_hex(v.remove(i));
+                    let ones = ascii_to_hex(*v.get(i).unwrap());
+                    v[i] = (sixteens << 4) | ones;
+                }
+            }
         }
+        i += 1;
     }
     String::from_utf8(v)
 }
