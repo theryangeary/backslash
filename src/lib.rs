@@ -207,6 +207,30 @@ mod tests {
                 escape_unicode(r#"Hello\u{1f980}world"#).unwrap()
             );
         }
+
+        #[test]
+        fn test_escape_at_end() {
+            assert_eq!(
+                String::from("Hello world\n"),
+                escape_ascii(r#"Hello world\n"#).unwrap()
+            );
+        }
+
+        #[test]
+        fn test_complex_escape_at_end() {
+            assert_eq!(
+                String::from("Hello world\x20"),
+                escape_ascii(r#"Hello world\x20"#).unwrap()
+            );
+        }
+
+        #[test]
+        fn test_trailing_backslash() {
+            assert_eq!(
+                String::from("Hello world\\"),
+                escape_ascii(r#"Hello world\"#).unwrap()
+            );
+        }
     }
 
     mod test_char_to_escape_sequence {
